@@ -1,0 +1,12 @@
+node_modules
+dist
+.astro
+.git
+.gitignore
+.github
+*.md
+.vscode
+.idea
+.DS_Store
+Dockerfile
+.dockerignore

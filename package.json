@@ -1,0 +1,24 @@
+{
+  "name": "sefkat-yasam-evi",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Şefkat Yaşam Evi — özel huzurevi & yaşlı bakım merkezi demo sitesi",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.3.0",
+    "@fontsource-variable/mulish": "^5.2.5",
+    "@fontsource-variable/nunito": "^5.2.5",
+    "astro": "^5.6.1",
+    "gsap": "^3.13.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.4",
+    "tailwindcss": "^4.1.4"
+  }
+}

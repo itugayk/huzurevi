@@ -1,0 +1,146 @@
+---
+import Icon from "./Icon.astro";
+import type { GalleryItem } from "../data/site";
+
+interface Props {
+  items: GalleryItem[];
+}
+const { items } = Astro.props;
+---
+
+<div class="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5" data-reveal-group data-gallery-grid>
+  {
+    items.map((item, i) => (
+      <button
+        type="button"
+        data-lb-open={i}
+        class:list={[
+          "group relative block overflow-hidden rounded-2xl md:rounded-3xl bg-brand-100 text-left focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-300",
+          i === 0 && "col-span-2 lg:row-span-2",
+        ]}
+        data-reveal-item
+        aria-label={`Büyüt: ${item.alt}`}
+      >
+        <img
+          src={item.src}
+          alt={item.alt}
+          loading={i < 4 ? "eager" : "lazy"}
+          decoding="async"
+          class:list={[
+            "w-full object-cover transition-transform duration-500 group-hover:scale-105",
+            i === 0 ? "aspect-[16/10] lg:h-full" : "aspect-[4/3]",
+          ]}
+        />
+        <span class="absolute inset-0 bg-gradient-to-t from-brand-900/65 via-brand-900/0 to-transparent opacity-80"></span>
+        <span class="absolute left-4 bottom-4 right-4 flex items-end justify-between gap-2">
+          <span class="text-white font-bold drop-shadow-sm">{item.category}</span>
+          <span class="grid h-10 w-10 place-items-center rounded-full bg-white/90 text-brand-700 translate-y-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+            <Icon name="plus" size={22} />
+          </span>
+        </span>
+      </button>
+    ))
+  }
+</div>
+
+<!-- Lightbox -->
+<div
+  class="lightbox fixed inset-0 z-[90] flex items-center justify-center bg-brand-900/90 backdrop-blur-sm p-4"
+  data-lightbox
+  hidden
+  role="dialog"
+  aria-modal="true"
+  aria-label="Galeri görüntüleyici"
+>
+  <button
+    type="button"
+    data-lb-close
+    class="absolute top-4 right-4 grid h-12 w-12 place-items-center rounded-full bg-white/15 text-white hover:bg-white/30 transition-colors"
+    aria-label="Kapat"
+  >
+    <Icon name="x" size={26} />
+  </button>
+
+  <button
+    type="button"
+    data-lb-prev
+    class="absolute left-3 md:left-6 grid h-12 w-12 place-items-center rounded-full bg-white/15 text-white hover:bg-white/30 transition-colors rotate-180"
+    aria-label="Önceki"
+  >
+    <Icon name="arrow-right" size={26} />
+  </button>
+
+  <figure class="max-w-5xl w-full">
+    <img data-lb-img src="" alt="" class="mx-auto max-h-[78vh] w-auto rounded-2xl shadow-2xl" />
+    <figcaption data-lb-caption class="mt-4 text-center text-white/85 font-semibold"></figcaption>
+  </figure>
+
+  <button
+    type="button"
+    data-lb-next
+    class="absolute right-3 md:right-6 grid h-12 w-12 place-items-center rounded-full bg-white/15 text-white hover:bg-white/30 transition-colors"
+    aria-label="Sonraki"
+  >
+    <Icon name="arrow-right" size={26} />
+  </button>
+</div>
+
+<script>
+  const grid = document.querySelector<HTMLElement>("[data-gallery-grid]");
+  const triggers = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-lb-open]"));
+  const lb = document.querySelector<HTMLElement>("[data-lightbox]");
+  if (lb && grid && triggers.length) {
+    const imgEl = lb.querySelector<HTMLImageElement>("[data-lb-img]")!;
+    const capEl = lb.querySelector<HTMLElement>("[data-lb-caption]")!;
+    const closeBtn = lb.querySelector<HTMLButtonElement>("[data-lb-close]")!;
+
+    // Image list is built from the gallery grid only (every grid item has an <img>),
+    // so non-image triggers (e.g. the virtual-tour button) can't break it.
+    const data = Array.from(grid.querySelectorAll<HTMLImageElement>("[data-lb-open] img")).map(
+      (img) => ({ src: img.getAttribute("src") || "", alt: img.getAttribute("alt") || "" })
+    );
+
+    let current = 0;
+    let lastFocused: HTMLElement | null = null;
+
+    const render = () => {
+      imgEl.src = data[current].src;
+      imgEl.alt = data[current].alt;
+      capEl.textContent = data[current].alt;
+    };
+    const open = (i: number) => {
+      current = i;
+      lastFocused = document.activeElement as HTMLElement;
+      render();
+      lb.removeAttribute("hidden");
+      document.body.style.overflow = "hidden";
+      closeBtn.focus();
+    };
+    const close = () => {
+      lb.setAttribute("hidden", "");
+      document.body.style.overflow = "";
+      lastFocused?.focus();
+    };
+    const move = (dir: number) => {
+      current = (current + dir + data.length) % data.length;
+      render();
+    };
+
+    triggers.forEach((t) => {
+      const idx = parseInt(t.getAttribute("data-lb-open") || "0", 10) || 0;
+      t.addEventListener("click", () => open(Math.min(Math.max(idx, 0), data.length - 1)));
+    });
+    closeBtn.addEventListener("click", close);
+    lb.querySelector("[data-lb-prev]")!.addEventListener("click", () => move(-1));
+    lb.querySelector("[data-lb-next]")!.addEventListener("click", () => move(1));
+    lb.addEventListener("click", (e) => {
+      if (e.target === lb) close();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (lb.hasAttribute("hidden")) return;
+      if (e.key === "Escape") close();
+      if (e.key === "ArrowLeft") move(-1);
+      if (e.key === "ArrowRight") move(1);
+    });
+  }
+</script>

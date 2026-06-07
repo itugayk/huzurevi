@@ -1,0 +1,218 @@
+---
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { site } from "../data/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = site.description,
+  image = "/images/hero.jpg",
+  noindex = false,
+} = Astro.props;
+
+const pageTitle = title ? `${title} · ${site.name}` : `${site.name} · Özel Huzurevi & Yaşlı Bakım Merkezi`;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const ogImage = new URL(image, site.url).href;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": ["MedicalOrganization", "LocalBusiness"],
+  name: site.name,
+  description: site.description,
+  url: site.url,
+  telephone: site.phone,
+  email: site.email,
+  image: ogImage,
+  logo: new URL("/favicon.svg", site.url).href,
+  priceRange: "₺₺",
+  foundingDate: String(site.founded),
+  medicalSpecialty: ["Geriatric", "Rehabilitation"],
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Bahçe Mah. Huzur Caddesi No: 24",
+    addressLocality: "Başakşehir",
+    addressRegion: "İstanbul",
+    addressCountry: "TR",
+  },
+  openingHoursSpecification: {
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    opens: "10:00",
+    closes: "19:00",
+  },
+  availableService: [
+    { "@type": "MedicalProcedure", name: "7/24 Yaşlı Bakımı" },
+    { "@type": "MedicalProcedure", name: "Fizyoterapi ve Rehabilitasyon" },
+    { "@type": "MedicalProcedure", name: "Demans ve Alzheimer Bakımı" },
+    { "@type": "MedicalProcedure", name: "Sağlık Takibi" },
+  ],
+};
+---
+
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex,nofollow" />}
+    <meta name="theme-color" content="#6f9bc4" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="tr_TR" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Restore accessibility preferences before paint -->
+    <script is:inline>
+      (function () {
+        var d = document.documentElement;
+        d.classList.add("has-js");
+        try {
+          if (localStorage.getItem("hc") === "1") d.classList.add("hc");
+          var fs = localStorage.getItem("fs");
+          if (fs) d.style.setProperty("--fs-scale", fs);
+        } catch (e) {}
+      })();
+    </script>
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-full focus:bg-brand-600 focus:px-5 focus:py-3 focus:text-white focus:font-bold"
+      >İçeriğe geç</a
+    >
+
+    <Header />
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <Footer />
+
+    <!-- Animations: calm, soft scroll reveals + accessibility controls -->
+    <script>
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      // ---- Scroll reveals (IntersectionObserver + CSS transitions) ----
+      // Compositor/event-loop driven: stays robust even if rAF is throttled,
+      // and content is guaranteed visible via the safety net below.
+      const allReveals = Array.from(
+        document.querySelectorAll<HTMLElement>("[data-reveal], [data-reveal-item]")
+      );
+      const showAll = () => allReveals.forEach((el) => el.classList.add("is-in"));
+
+      if (reduce || !("IntersectionObserver" in window)) {
+        showAll();
+      } else {
+        const io = new IntersectionObserver(
+          (entries, obs) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              const el = entry.target as HTMLElement;
+              obs.unobserve(el);
+
+              if (el.hasAttribute("data-reveal-group")) {
+                const items = el.querySelectorAll<HTMLElement>("[data-reveal-item]");
+                items.forEach((item, i) =>
+                  window.setTimeout(() => item.classList.add("is-in"), i * 90)
+                );
+              } else {
+                const delay = (parseFloat(el.dataset.delay || "0") || 0) * 1000;
+                window.setTimeout(() => el.classList.add("is-in"), delay);
+              }
+            });
+          },
+          { rootMargin: "0px 0px -8% 0px", threshold: 0.05 }
+        );
+
+        document
+          .querySelectorAll<HTMLElement>("[data-reveal-group]")
+          .forEach((g) => io.observe(g));
+        // Standalone reveals that are not part of a group
+        allReveals
+          .filter((el) => el.hasAttribute("data-reveal") && !el.closest("[data-reveal-group]"))
+          .forEach((el) => io.observe(el));
+
+        // Safety net: nothing stays hidden, no matter what.
+        window.setTimeout(showAll, 2600);
+        window.addEventListener("load", () => window.setTimeout(showAll, 1200));
+      }
+
+      // ---- GSAP: gentle decorative parallax (progressive enhancement) ----
+      if (!reduce) {
+        Promise.all([import("gsap"), import("gsap/ScrollTrigger")])
+          .then(([{ gsap }, { ScrollTrigger }]) => {
+            gsap.registerPlugin(ScrollTrigger);
+            gsap.utils.toArray<HTMLElement>("[data-parallax]").forEach((el) => {
+              gsap.to(el, {
+                yPercent: parseFloat(el.dataset.parallax || "-12"),
+                ease: "none",
+                scrollTrigger: {
+                  trigger: el,
+                  start: "top bottom",
+                  end: "bottom top",
+                  scrub: true,
+                },
+              });
+            });
+          })
+          .catch(() => {});
+      }
+
+      // ---- Accessibility controls (contrast + text size) ----
+      const root = document.documentElement;
+      const save = (k: string, v: string) => {
+        try {
+          localStorage.setItem(k, v);
+        } catch (e) {}
+      };
+
+      document.querySelectorAll<HTMLButtonElement>('[data-a11y="contrast"]').forEach((btn) => {
+        const sync = () =>
+          btn.setAttribute("aria-pressed", root.classList.contains("hc") ? "true" : "false");
+        sync();
+        btn.addEventListener("click", () => {
+          root.classList.toggle("hc");
+          save("hc", root.classList.contains("hc") ? "1" : "0");
+          sync();
+        });
+      });
+
+      const currentScale = () =>
+        parseFloat(getComputedStyle(root).getPropertyValue("--fs-scale")) || 1;
+      const setScale = (s: number) => {
+        const v = Math.min(1.4, Math.max(0.9, +s.toFixed(2)));
+        root.style.setProperty("--fs-scale", String(v));
+        save("fs", String(v));
+      };
+      document
+        .querySelectorAll('[data-a11y="font-inc"]')
+        .forEach((b) => b.addEventListener("click", () => setScale(currentScale() + 0.1)));
+      document
+        .querySelectorAll('[data-a11y="font-dec"]')
+        .forEach((b) => b.addEventListener("click", () => setScale(currentScale() - 0.1)));
+    </script>
+  </body>
+</html>

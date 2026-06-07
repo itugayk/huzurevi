@@ -1,0 +1,45 @@
+---
+import Icon from "./Icon.astro";
+import { site } from "../data/site";
+
+interface Props {
+  title?: string;
+  text?: string;
+}
+const {
+  title = "Sevdiğiniz için doğru kararı birlikte verelim",
+  text = "Tesisimizi ziyaret edin, ekibimizle tanışın ve tüm sorularınızı yüz yüze sorun. Ön görüşme ve tesis turu ücretsizdir.",
+} = Astro.props;
+---
+
+<section class="section">
+  <div class="container-x">
+    <div
+      class="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-brand-600 to-brand-800 px-6 py-14 md:px-16 md:py-20 text-center"
+      data-reveal
+    >
+      <div class="blob" style="width:340px;height:340px;background:#e8b89b;top:-100px;left:-60px;opacity:.3"></div>
+      <div class="blob" style="width:300px;height:300px;background:#8aab8d;bottom:-120px;right:-40px;opacity:.25"></div>
+
+      <div class="relative max-w-2xl mx-auto">
+        <span class="eyebrow !text-peach-300">
+          <Icon name="calendar" size={18} />
+          Ziyaret Randevusu
+        </span>
+        <h2 class="mt-3 text-3xl md:text-[2.6rem] !text-white">{title}</h2>
+        <p class="mt-4 text-lg text-white/85 leading-relaxed">{text}</p>
+
+        <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+          <a href="/iletisim" class="btn btn-accent text-lg">
+            <Icon name="calendar" size={22} />
+            Ziyaret Planlayın
+          </a>
+          <a href={`tel:${site.phoneHref}`} class="btn btn-ghost text-lg !bg-white/10 !text-white !border-white/30 hover:!bg-white/20">
+            <Icon name="phone" size={22} />
+            {site.phone}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

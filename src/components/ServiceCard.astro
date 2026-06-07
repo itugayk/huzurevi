@@ -1,0 +1,47 @@
+---
+import Icon from "./Icon.astro";
+import type { Service } from "../data/site";
+
+interface Props {
+  service: Service;
+  detailed?: boolean;
+}
+const { service, detailed = false } = Astro.props;
+
+const accents: Record<Service["accent"], string> = {
+  brand: "bg-brand-50 text-brand-600",
+  peach: "bg-peach-100 text-peach-600",
+  sage: "bg-sage-100 text-sage-600",
+};
+const accentClass = accents[service.accent];
+---
+
+<article
+  class="card group h-full p-7 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-soft"
+  data-reveal-item
+>
+  <span
+    class:list={[
+      "grid h-14 w-14 place-items-center rounded-2xl transition-transform group-hover:scale-110",
+      accentClass,
+    ]}
+  >
+    <Icon name={service.icon} size={30} />
+  </span>
+
+  <h3 class="mt-5 text-xl text-brand-800">{service.title}</h3>
+  <p class="mt-2.5 text-ink-soft leading-relaxed">{service.summary}</p>
+
+  {
+    detailed && (
+      <ul class="mt-5 space-y-2.5 border-t border-brand-100 pt-5">
+        {service.details.map((d) => (
+          <li class="flex items-start gap-2.5 text-ink-soft">
+            <Icon name="check-circle" size={20} class="mt-0.5 shrink-0 text-sage-500" />
+            <span>{d}</span>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</article>

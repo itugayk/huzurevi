@@ -1,0 +1,68 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import FaqAccordion from "../components/FaqAccordion.astro";
+import Icon from "../components/Icon.astro";
+import { faqGroups, site } from "../data/site";
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqGroups.flatMap((g) =>
+    g.items.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.a },
+    }))
+  ),
+};
+---
+
+<BaseLayout
+  title="Sıkça Sorulan Sorular"
+  description="Ücretlendirme, ziyaret, sağlık süreçleri ve kabul hakkında en çok merak edilenler — Şefkat Yaşam Evi SSS."
+>
+  <PageHero
+    current="SSS"
+    eyebrow="Sıkça Sorulan Sorular"
+    eyebrowIcon="clipboard"
+    title="Merak ettiğiniz her şey, açıkça"
+    intro="Karar verirken aklınıza takılan soruları derledik. Yanıtını bulamadığınız bir konu olursa, bir telefon kadar yakınız."
+  />
+
+  <section class="section">
+    <div class="container-x grid lg:grid-cols-[1.7fr_1fr] gap-10 lg:gap-14 items-start">
+      <div>
+        <FaqAccordion groups={faqGroups} />
+      </div>
+
+      <aside class="lg:sticky lg:top-32" data-reveal>
+        <div class="card p-7">
+          <span class="grid h-14 w-14 place-items-center rounded-2xl bg-brand-50 text-brand-600">
+            <Icon name="phone" size={30} />
+          </span>
+          <h2 class="mt-5 text-2xl">Sorunuz mu var?</h2>
+          <p class="mt-2 text-ink-soft leading-relaxed">
+            Aradığınız yanıtı bulamadıysanız, ekibimiz tüm sorularınızı sabırla yanıtlamaktan mutluluk duyar.
+          </p>
+          <div class="mt-6 space-y-3">
+            <a href={`tel:${site.phoneHref}`} class="btn btn-primary w-full">
+              <Icon name="phone" size={20} />
+              {site.phone}
+            </a>
+            <a href="/iletisim" class="btn btn-ghost w-full">
+              <Icon name="calendar" size={20} />
+              Ziyaret & Randevu
+            </a>
+          </div>
+          <p class="mt-5 text-sm text-ink-muted flex items-center gap-2">
+            <Icon name="clock" size={16} />
+            {site.visitingHours}
+          </p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+</BaseLayout>

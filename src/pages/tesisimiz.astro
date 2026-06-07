@@ -1,0 +1,136 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import Gallery from "../components/Gallery.astro";
+import Icon from "../components/Icon.astro";
+import CtaBand from "../components/CtaBand.astro";
+import { gallery, rooms } from "../data/site";
+
+const features = [
+  { icon: "shield-check", title: "Güvenli Yaşam Alanı", text: "7/24 kameralı izleme, çağrı butonları ve kontrollü giriş-çıkış." },
+  { icon: "home", title: "Engelsiz Tasarım", text: "Tekerlekli sandalye erişimi, tutamaçlar ve kaymaz zeminler." },
+  { icon: "leaf", title: "Yeşil Bahçe", text: "Güvenli yürüyüş yolları, oturma alanları ve açık hava etkinlikleri." },
+  { icon: "sparkles", title: "Hijyen Standardı", text: "Günlük dezenfeksiyon ve profesyonel temizlik ekibi." },
+];
+---
+
+<BaseLayout
+  title="Tesisimiz"
+  description="Şefkat Yaşam Evi'nin ferah odaları, yeşil bahçesi, sosyal alanları ve oda tiplerini keşfedin. Galeri ve sanal tur."
+>
+  <PageHero
+    current="Tesisimiz"
+    eyebrow="Tesisimiz"
+    eyebrowIcon="home"
+    title="Huzurun, ışığın ve yeşilin buluştuğu bir yuva"
+    intro="Her köşesi konfor ve güvenlik düşünülerek tasarlandı. Fotoğraflara tıklayarak yakından inceleyebilirsiniz."
+  />
+
+  <!-- Virtual tour mock -->
+  <section class="pt-12 md:pt-16">
+    <div class="container-x">
+      <div class="relative overflow-hidden rounded-[2.5rem] shadow-soft ring-1 ring-brand-100" data-reveal>
+        <img
+          src="/images/salon.jpg"
+          alt="Şefkat Yaşam Evi sosyal yaşam salonu"
+          width="1400"
+          height="1000"
+          fetchpriority="high"
+          class="w-full object-cover aspect-[16/9]"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-brand-900/70 via-brand-900/10 to-transparent"></div>
+        <div class="absolute inset-0 flex flex-col items-center justify-center text-center text-white p-6">
+          <button
+            type="button"
+            data-lb-open="0"
+            class="grid h-20 w-20 place-items-center rounded-full bg-white/95 text-brand-700 shadow-soft transition-transform hover:scale-110"
+            aria-label="Sanal turu başlat"
+          >
+            <Icon name="arrow-right" size={34} />
+          </button>
+          <p class="mt-5 font-display font-extrabold text-2xl drop-shadow">360° Sanal Tur</p>
+          <p class="text-white/80">Tesisimizi evinizin rahatlığında gezin <span class="opacity-70">(demo)</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <section class="section">
+    <div class="container-x">
+      <SectionHeading
+        eyebrow="Galeri"
+        eyebrowIcon="sparkles"
+        title="Tesisimizden kareler"
+        intro="Odalar, sosyal alanlar, bahçe ve sağlık birimlerimizden görüntüler."
+      />
+      <div class="mt-12">
+        <Gallery items={gallery} />
+      </div>
+    </div>
+  </section>
+
+  <!-- Room types -->
+  <section class="section bg-white">
+    <div class="container-x">
+      <SectionHeading
+        eyebrow="Oda Tipleri"
+        eyebrowIcon="home"
+        title="İhtiyaca uygun konaklama seçenekleri"
+        intro="Bağımsızlık düzeyine ve tercihlere göre farklı oda seçenekleri sunuyoruz."
+      />
+      <div class="mt-12 grid md:grid-cols-3 gap-6" data-reveal-group>
+        {
+          rooms.map((room) => (
+            <article class="card overflow-hidden h-full flex flex-col" data-reveal-item>
+              <div class="relative aspect-[4/3] overflow-hidden">
+                <img src={room.image} alt={room.name} width="1400" height="1000" loading="lazy" class="h-full w-full object-cover" />
+                <span class="absolute top-4 left-4 chip !bg-white/95 text-sm">
+                  <Icon name="users" size={16} />
+                  {room.capacity}
+                </span>
+              </div>
+              <div class="p-6 flex flex-col flex-1">
+                <h3 class="text-xl text-brand-800">{room.name}</h3>
+                <p class="mt-2 text-ink-soft leading-relaxed">{room.desc}</p>
+                <ul class="mt-4 grid grid-cols-2 gap-2 border-t border-brand-100 pt-4">
+                  {room.features.map((f) => (
+                    <li class="flex items-center gap-2 text-sm text-ink-soft">
+                      <Icon name="check" size={16} class="text-sage-500 shrink-0" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Facility features -->
+  <section class="section">
+    <div class="container-x">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6" data-reveal-group>
+        {
+          features.map((f) => (
+            <div class="text-center" data-reveal-item>
+              <span class="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-brand-50 text-brand-600">
+                <Icon name={f.icon} size={32} />
+              </span>
+              <h3 class="mt-4 text-lg text-brand-800">{f.title}</h3>
+              <p class="mt-2 text-ink-soft leading-relaxed">{f.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="En iyisi, yerinde görmektir"
+    text="Fotoğraflar bir fikir verir; ama sıcaklığı hissetmek için sizi tesisimizde ağırlamak isteriz. Ücretsiz tur için randevu alın."
+  />
+</BaseLayout>

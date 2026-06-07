@@ -1,0 +1,37 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/Icon.astro";
+import { nav } from "../data/site";
+---
+
+<BaseLayout title="Sayfa Bulunamadı" noindex>
+  <section class="section">
+    <div class="container-x text-center max-w-xl mx-auto">
+      <span class="mx-auto grid h-20 w-20 place-items-center rounded-3xl bg-brand-50 text-brand-500">
+        <Icon name="map-pin" size={40} />
+      </span>
+      <p class="mt-6 font-display font-extrabold text-6xl text-brand-300">404</p>
+      <h1 class="mt-2 text-3xl md:text-4xl">Aradığınız sayfayı bulamadık</h1>
+      <p class="mt-4 text-lg text-ink-soft">
+        Sayfa taşınmış veya kaldırılmış olabilir. Aşağıdaki bağlantılardan devam edebilirsiniz.
+      </p>
+      <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="/" class="btn btn-primary text-lg">
+          <Icon name="home" size={22} />
+          Ana Sayfaya Dön
+        </a>
+        <a href="/iletisim" class="btn btn-ghost text-lg">
+          <Icon name="phone" size={22} />
+          Bize Ulaşın
+        </a>
+      </div>
+      <nav class="mt-10 flex flex-wrap gap-2 justify-center" aria-label="Sayfalar">
+        {
+          nav.slice(1).map((item) => (
+            <a href={item.href} class="chip hover:bg-brand-50 transition-colors">{item.label}</a>
+          ))
+        }
+      </nav>
+    </div>
+  </section>
+</BaseLayout>

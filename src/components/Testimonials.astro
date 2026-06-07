@@ -1,0 +1,46 @@
+---
+import Icon from "./Icon.astro";
+import { testimonials } from "../data/site";
+
+const palette = ["bg-brand-100 text-brand-700", "bg-peach-100 text-peach-600", "bg-sage-100 text-sage-600"];
+const initials = (name: string) =>
+  name
+    .split(" ")
+    .map((p) => p[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+---
+
+<div class="grid md:grid-cols-2 gap-6" data-reveal-group>
+  {
+    testimonials.map((t, i) => (
+      <figure class="card h-full p-7 flex flex-col" data-reveal-item>
+        <div class="flex items-center gap-1 text-peach-500" aria-label={`${t.rating} / 5 puan`}>
+          {Array.from({ length: t.rating }).map(() => (
+            <Icon name="star" size={20} />
+          ))}
+        </div>
+        <blockquote class="mt-4 text-lg text-ink leading-relaxed flex-1">
+          <span class="font-display text-3xl text-peach-300 leading-none mr-1 align-top">“</span>
+          {t.text}
+        </blockquote>
+        <figcaption class="mt-6 flex items-center gap-3.5 border-t border-brand-100 pt-5">
+          <span
+            class:list={[
+              "grid h-12 w-12 place-items-center rounded-full font-display font-extrabold",
+              palette[i % palette.length],
+            ]}
+            aria-hidden="true"
+          >
+            {initials(t.name)}
+          </span>
+          <span>
+            <span class="block font-display font-extrabold text-brand-800">{t.name}</span>
+            <span class="block text-sm text-ink-muted">{t.relation}</span>
+          </span>
+        </figcaption>
+      </figure>
+    ))
+  }
+</div>

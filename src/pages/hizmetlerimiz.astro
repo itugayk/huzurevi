@@ -1,0 +1,108 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import ServiceCard from "../components/ServiceCard.astro";
+import Icon from "../components/Icon.astro";
+import CtaBand from "../components/CtaBand.astro";
+import { services } from "../data/site";
+
+const steps = [
+  { icon: "home", title: "Tanışma & Tesis Turu", text: "Ücretsiz ziyaretle tesisimizi gezer, ekibimizle tanışır ve tüm sorularınızı sorarsınız." },
+  { icon: "heart-pulse", title: "Sağlık Değerlendirmesi", text: "Hekimimiz genel sağlık durumunu, ilaçları ve bakım ihtiyacını değerlendirir." },
+  { icon: "clipboard", title: "Bireysel Bakım Planı", text: "Hekim, hemşire ve diyetisyen onaylı kişiye özel bir bakım planı oluşturulur." },
+  { icon: "check-circle", title: "Yerleşim & Uyum", text: "Uygun oda hazırlanır; tanıdık eşyalarla sıcak bir uyum süreci başlar." },
+];
+
+const day = [
+  { time: "07:30", title: "Güne yumuşak başlangıç", text: "Kişisel bakım desteği, sabah ilaçları ve yaşamsal değer ölçümü." },
+  { time: "08:30", title: "Kahvaltı", text: "Diyetisyen onaylı, sıcak ve dengeli kahvaltı; sohbet eşliğinde." },
+  { time: "10:00", title: "Aktivite & terapi", text: "Hafıza oyunları, müzik, hafif egzersiz veya bahçe yürüyüşü." },
+  { time: "12:30", title: "Öğle yemeği & dinlenme", text: "Besleyici öğle yemeği ardından sakin bir dinlenme molası." },
+  { time: "15:00", title: "Fizyoterapi & sosyalleşme", text: "Bireysel rehabilitasyon, el işi, okuma saati veya misafir kabulü." },
+  { time: "18:00", title: "Akşam yemeği & huzur", text: "Akşam yemeği, ilaç takibi ve gün sonu sohbetiyle güvenli bir gece." },
+];
+---
+
+<BaseLayout
+  title="Hizmetlerimiz"
+  description="7/24 bakım, sağlık takibi, fizyoterapi, beslenme, sosyal aktiviteler ve demans bakımı — Şefkat Yaşam Evi'nin kapsamlı hizmetleri."
+>
+  <PageHero
+    current="Hizmetlerimiz"
+    eyebrow="Hizmetlerimiz"
+    eyebrowIcon="hand-heart"
+    title="Sevdiklerinizin ihtiyaç duyduğu her şey, özenle"
+    intro="Sağlıktan sosyal yaşama her alanda bütüncül bir bakım sunuyoruz. Her hizmet, bireysel bakım planınızın bir parçasıdır."
+  />
+
+  <!-- Services detailed -->
+  <section class="section">
+    <div class="container-x">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" data-reveal-group>
+        {services.map((service) => <ServiceCard service={service} detailed />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section class="section bg-white">
+    <div class="container-x">
+      <SectionHeading
+        eyebrow="Nasıl Başlıyoruz?"
+        eyebrowIcon="clipboard"
+        title="Kabul sürecimiz: şeffaf ve adım adım"
+        intro="Acele yok. Önce tanışır, sonra sevdiğiniz için en doğru planı birlikte oluştururuz."
+      />
+      <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-6" data-reveal-group>
+        {
+          steps.map((s, i) => (
+            <div class="card relative p-7 h-full" data-reveal-item>
+              <span class="absolute top-6 right-6 font-display font-extrabold text-5xl text-brand-100">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span class="grid h-14 w-14 place-items-center rounded-2xl bg-brand-50 text-brand-600">
+                <Icon name={s.icon} size={30} />
+              </span>
+              <h3 class="mt-5 text-xl text-brand-800">{s.title}</h3>
+              <p class="mt-2 text-ink-soft leading-relaxed">{s.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- A day -->
+  <section class="section">
+    <div class="container-x">
+      <SectionHeading
+        eyebrow="Bir Gün"
+        eyebrowIcon="clock"
+        title="Sevdiğinizin huzurlu bir günü"
+        intro="Düzenli, dengeli ve sosyal bir günlük akış; güvenlik ve keyfi bir arada tutar."
+      />
+      <div class="mt-12 max-w-3xl mx-auto" data-reveal-group>
+        <ol class="relative border-l-2 border-brand-200 ml-4 space-y-8">
+          {
+            day.map((d) => (
+              <li class="relative pl-8" data-reveal-item>
+                <span class="absolute -left-[0.7rem] top-1 grid h-5 w-5 place-items-center rounded-full bg-brand-400 ring-4 ring-brand-100" />
+                <div class="flex flex-wrap items-baseline gap-x-3">
+                  <span class="chip !py-1 !px-3 text-sm">{d.time}</span>
+                  <h3 class="text-lg text-brand-800">{d.title}</h3>
+                </div>
+                <p class="mt-2 text-ink-soft leading-relaxed">{d.text}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Sevdiğinize en uygun bakımı konuşalım"
+    text="İhtiyaçları her birey için farklıdır. Ücretsiz ön görüşmede, size özel bir bakım planının nasıl olabileceğini birlikte değerlendirelim."
+  />
+</BaseLayout>

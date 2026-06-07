@@ -1,0 +1,101 @@
+---
+import Icon from "./Icon.astro";
+const inputClass =
+  "w-full rounded-2xl border-2 border-brand-100 bg-white px-4 py-3.5 text-ink placeholder:text-ink-muted/70 transition-colors focus:border-brand-400 focus:outline-none";
+const labelClass = "block font-bold text-brand-800 mb-1.5";
+---
+
+<form data-appointment class="card p-6 md:p-8 space-y-5" novalidate>
+  <div class="grid sm:grid-cols-2 gap-5">
+    <div>
+      <label class={labelClass} for="ap-name">Adınız Soyadınız <span class="text-peach-600">*</span></label>
+      <input class={inputClass} id="ap-name" name="name" type="text" required autocomplete="name" placeholder="Adınız Soyadınız" />
+    </div>
+    <div>
+      <label class={labelClass} for="ap-phone">Telefon <span class="text-peach-600">*</span></label>
+      <input class={inputClass} id="ap-phone" name="phone" type="tel" required autocomplete="tel" placeholder="05XX XXX XX XX" />
+    </div>
+  </div>
+
+  <div class="grid sm:grid-cols-2 gap-5">
+    <div>
+      <label class={labelClass} for="ap-email">E-posta</label>
+      <input class={inputClass} id="ap-email" name="email" type="email" autocomplete="email" placeholder="ornek@eposta.com" />
+    </div>
+    <div>
+      <label class={labelClass} for="ap-relation">Kimin için?</label>
+      <select class={inputClass} id="ap-relation" name="relation">
+        <option value="">Seçiniz</option>
+        <option>Annem için</option>
+        <option>Babam için</option>
+        <option>Eşim için</option>
+        <option>Bir yakınım için</option>
+        <option>Kendim için</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="grid sm:grid-cols-2 gap-5">
+    <div>
+      <label class={labelClass} for="ap-date">Tercih edilen ziyaret tarihi</label>
+      <input class={inputClass} id="ap-date" name="date" type="date" />
+    </div>
+    <div>
+      <label class={labelClass} for="ap-time">Tercih edilen saat</label>
+      <select class={inputClass} id="ap-time" name="time">
+        <option value="">Seçiniz</option>
+        <option>10:00 – 12:00</option>
+        <option>12:00 – 14:00</option>
+        <option>14:00 – 16:00</option>
+        <option>16:00 – 19:00</option>
+      </select>
+    </div>
+  </div>
+
+  <div>
+    <label class={labelClass} for="ap-message">Eklemek istedikleriniz</label>
+    <textarea class={inputClass} id="ap-message" name="message" rows="4" placeholder="Sağlık durumu, özel ihtiyaçlar veya sormak istedikleriniz..."></textarea>
+  </div>
+
+  <label class="flex items-start gap-3 text-sm text-ink-soft">
+    <input type="checkbox" name="kvkk" required class="mt-1 h-5 w-5 rounded border-2 border-brand-200 accent-brand-500" />
+    <span>Kişisel verilerimin ziyaret randevusu amacıyla işlenmesini kabul ediyorum (KVKK Aydınlatma Metni). <span class="text-peach-600">*</span></span>
+  </label>
+
+  <button type="submit" class="btn btn-primary w-full text-lg">
+    <Icon name="calendar" size={22} />
+    Ziyaret Randevusu Oluştur
+  </button>
+
+  <div
+    data-form-success
+    hidden
+    class="rounded-2xl border-2 border-sage-300 bg-sage-50 p-5 flex items-start gap-3"
+    role="status"
+  >
+    <span class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-sage-400 text-white">
+      <Icon name="check" size={22} />
+    </span>
+    <div>
+      <p class="font-display font-extrabold text-brand-800">Talebiniz alındı, teşekkürler!</p>
+      <p class="text-ink-soft">Ekibimiz en kısa sürede sizi arayarak ziyaret saatinizi netleştirecek. (Bu bir demo formdur; gerçek bir kayıt oluşturulmaz.)</p>
+    </div>
+  </div>
+</form>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("[data-appointment]");
+  const success = document.querySelector<HTMLElement>("[data-form-success]");
+  if (form && success) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      success.removeAttribute("hidden");
+      form.querySelector("button[type=submit]")?.setAttribute("disabled", "true");
+      success.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  }
+</script>

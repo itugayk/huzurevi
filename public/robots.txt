@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://huzurevi.demo.dijifa.com/sitemap-index.xml

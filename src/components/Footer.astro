@@ -1,0 +1,105 @@
+---
+import { site, nav } from "../data/site";
+import Icon from "./Icon.astro";
+
+const year = 2026;
+---
+
+<footer class="relative mt-10 bg-brand-900 text-white/85 overflow-hidden">
+  <div class="blob" style="width:380px;height:380px;background:#6f9bc4;top:-120px;right:-80px;opacity:.18"></div>
+
+  <!-- Emergency / CTA strip -->
+  <div class="border-b border-white/10">
+    <div class="container-x py-8 flex flex-col md:flex-row items-center justify-between gap-5 relative">
+      <div class="flex items-center gap-4 text-center md:text-left">
+        <span class="hidden sm:grid h-14 w-14 place-items-center rounded-2xl bg-peach-400 text-brand-900 shrink-0">
+          <Icon name="phone" size={28} />
+        </span>
+        <div>
+          <p class="font-display text-xl font-extrabold text-white">7/24 Acil Bakım Hattımız</p>
+          <p class="text-white/70">Aklınıza takılan her şey için, gece gündüz buradayız.</p>
+        </div>
+      </div>
+      <a href={`tel:${site.emergencyHref}`} class="btn btn-accent text-lg">
+        <Icon name="phone" size={20} />
+        {site.emergency}
+      </a>
+    </div>
+  </div>
+
+  <div class="container-x py-14 relative grid gap-10 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1.3fr]">
+    <!-- Brand -->
+    <div>
+      <div class="flex items-center gap-3 mb-4">
+        <span class="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-brand-400 to-brand-600 text-white">
+          <Icon name="hand-heart" size={26} />
+        </span>
+        <span class="font-display font-extrabold text-2xl text-white">{site.name}</span>
+      </div>
+      <p class="max-w-md leading-relaxed">
+        {site.description}
+      </p>
+      <div class="mt-5 flex items-center gap-3">
+        <a href={site.social.instagram} aria-label="Instagram" class="grid h-11 w-11 place-items-center rounded-full bg-white/10 hover:bg-white/20 transition-colors">
+          <Icon name="instagram" size={20} />
+        </a>
+        <a href={site.social.facebook} aria-label="Facebook" class="grid h-11 w-11 place-items-center rounded-full bg-white/10 hover:bg-white/20 transition-colors">
+          <Icon name="facebook" size={20} />
+        </a>
+        <a href={site.social.youtube} aria-label="YouTube" class="grid h-11 w-11 place-items-center rounded-full bg-white/10 hover:bg-white/20 transition-colors">
+          <Icon name="youtube" size={20} />
+        </a>
+      </div>
+    </div>
+
+    <!-- Quick links -->
+    <nav aria-label="Alt menü">
+      <h2 class="font-display font-extrabold text-lg text-white mb-4">Sayfalar</h2>
+      <ul class="space-y-2.5">
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href} class="hover:text-peach-200 transition-colors">
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <!-- Contact -->
+    <div>
+      <h2 class="font-display font-extrabold text-lg text-white mb-4">İletişim</h2>
+      <ul class="space-y-4">
+        <li class="flex items-start gap-3">
+          <Icon name="map-pin" size={22} class="mt-0.5 text-peach-300 shrink-0" />
+          <span>{site.address}</span>
+        </li>
+        <li class="flex items-center gap-3">
+          <Icon name="phone" size={22} class="text-peach-300 shrink-0" />
+          <a href={`tel:${site.phoneHref}`} class="hover:text-peach-200 transition-colors">{site.phone}</a>
+        </li>
+        <li class="flex items-center gap-3">
+          <Icon name="mail" size={22} class="text-peach-300 shrink-0" />
+          <a href={`mailto:${site.email}`} class="hover:text-peach-200 transition-colors">{site.email}</a>
+        </li>
+        <li class="flex items-center gap-3">
+          <Icon name="clock" size={22} class="text-peach-300 shrink-0" />
+          <span>{site.visitingHours}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- License + copyright -->
+  <div class="border-t border-white/10">
+    <div class="container-x py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-white/60">
+      <p class="flex items-center gap-2 text-center sm:text-left">
+        <Icon name="badge" size={18} class="text-peach-300 shrink-0" />
+        {site.license}
+      </p>
+      <p>© {year} {site.name}. Tüm hakları saklıdır. · Demo tasarım.</p>
+    </div>
+  </div>
+</footer>

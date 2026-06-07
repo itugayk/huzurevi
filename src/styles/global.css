@@ -1,0 +1,292 @@
+@import "tailwindcss";
+
+/* Self-hosted, accessible variable fonts (no external CDN at runtime) */
+@import "@fontsource-variable/nunito";
+@import "@fontsource-variable/mulish";
+
+/* ============================================================
+   Design tokens — "Şefkat Yaşam Evi"
+   Soft blue + warm cream + peach accent + sage green touch
+   ============================================================ */
+@theme {
+  /* Brand — soft, trustworthy blue (#6f9bc4 base) */
+  --color-brand-50: #f2f7fb;
+  --color-brand-100: #e3eef6;
+  --color-brand-200: #c5dcec;
+  --color-brand-300: #9fc2dd;
+  --color-brand-400: #6f9bc4;
+  --color-brand-500: #5683b0;
+  --color-brand-600: #466a93;
+  --color-brand-700: #3b5777;
+  --color-brand-800: #344a63;
+  --color-brand-900: #2e3f53;
+
+  /* Peach — warm accent (#e8b89b base) */
+  --color-peach-50: #fdf6f1;
+  --color-peach-100: #fbeee5;
+  --color-peach-200: #f6dcc9;
+  --color-peach-300: #efc8ad;
+  --color-peach-400: #e8b89b;
+  --color-peach-500: #db9c77;
+  --color-peach-600: #c97f54;
+
+  /* Sage — calm green touch */
+  --color-sage-50: #f1f6f1;
+  --color-sage-100: #e3ece4;
+  --color-sage-200: #cfe0cf;
+  --color-sage-300: #a9c6a9;
+  --color-sage-400: #8aab8d;
+  --color-sage-500: #6f9173;
+  --color-sage-600: #59755d;
+
+  /* Cream surfaces */
+  --color-cream-50: #fdfaf4;
+  --color-cream-100: #fbf6ec;
+  --color-cream-200: #f5ecdb;
+
+  /* Warm ink (text) */
+  --color-ink: #34414e;
+  --color-ink-soft: #586673;
+  --color-ink-muted: #7c8894;
+
+  --font-sans: "Mulish Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Nunito Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --radius-xl2: 1.75rem;
+  --shadow-soft: 0 18px 50px -20px rgba(52, 74, 99, 0.28);
+  --shadow-card: 0 12px 34px -18px rgba(52, 74, 99, 0.22);
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+@layer base {
+  :root {
+    --fs-scale: 1; /* adjusted by the accessibility text-size toggle */
+  }
+
+  html {
+    font-size: calc(100% * var(--fs-scale));
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-cream-50);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem; /* 17px base — larger for readability */
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4, h5 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    color: var(--color-brand-900);
+    text-wrap: balance;
+  }
+
+  p { text-wrap: pretty; }
+
+  a { color: inherit; }
+
+  :focus-visible {
+    outline: 3px solid var(--color-brand-500);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  /* Comfortable hit targets everywhere */
+  a, button, summary, input, select, textarea, label {
+    touch-action: manipulation;
+  }
+
+  ::selection {
+    background: var(--color-peach-200);
+    color: var(--color-brand-900);
+  }
+}
+
+/* ============================================================
+   Components
+   ============================================================ */
+@layer components {
+  .container-x {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .container-x { padding-inline: 2rem; }
+  }
+
+  .section { padding-block: 4.5rem; }
+  @media (min-width: 768px) {
+    .section { padding-block: 6.5rem; }
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.8125rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-brand-600);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    min-height: 3.25rem; /* large click area */
+    padding-inline: 1.6rem;
+    border-radius: 999px;
+    font-weight: 800;
+    font-size: 1.0625rem;
+    line-height: 1;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease, color 0.25s ease;
+    cursor: pointer;
+    text-align: center;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn:active { transform: translateY(0); }
+
+  .btn-primary {
+    background: var(--color-brand-500);
+    color: #fff;
+    box-shadow: 0 14px 30px -12px rgba(70, 106, 147, 0.7);
+  }
+  .btn-primary:hover { background: var(--color-brand-600); }
+
+  .btn-accent {
+    background: var(--color-peach-400);
+    color: var(--color-brand-900);
+    box-shadow: 0 14px 30px -12px rgba(219, 156, 119, 0.75);
+  }
+  .btn-accent:hover { background: var(--color-peach-500); }
+
+  .btn-ghost {
+    background: #fff;
+    color: var(--color-brand-700);
+    border: 2px solid var(--color-brand-200);
+  }
+  .btn-ghost:hover { border-color: var(--color-brand-400); background: var(--color-brand-50); }
+
+  .card {
+    background: #fff;
+    border-radius: var(--radius-xl2);
+    box-shadow: var(--shadow-card);
+    border: 1px solid rgba(110, 155, 196, 0.12);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid var(--color-brand-100);
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--color-brand-700);
+  }
+
+  .link-underline {
+    font-weight: 800;
+    color: var(--color-brand-600);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .link-underline::after {
+    content: "→";
+    transition: transform 0.25s ease;
+  }
+  .link-underline:hover::after { transform: translateX(4px); }
+
+  .prose-warm p { color: var(--color-ink-soft); }
+  .prose-warm h2 { margin-bottom: 0.75rem; }
+}
+
+/* ============================================================
+   Scroll-reveal (GSAP). Hidden only when JS + motion allowed.
+   ============================================================ */
+@media (prefers-reduced-motion: no-preference) {
+  .has-js [data-reveal],
+  .has-js [data-reveal-item] {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 0.7s ease,
+      transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+    will-change: opacity, transform;
+  }
+  .has-js [data-reveal].is-in,
+  .has-js [data-reveal-item].is-in {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+/* Decorative soft blob backgrounds */
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.5;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ============================================================
+   High-contrast accessibility mode (html.hc)
+   ============================================================ */
+html.hc {
+  --color-ink: #11181f;
+  --color-ink-soft: #1c2630;
+  --color-ink-muted: #2a3540;
+  --color-cream-50: #ffffff;
+  --color-cream-100: #ffffff;
+  --color-cream-200: #f1f1f1;
+}
+html.hc body { background: #ffffff; }
+html.hc h1, html.hc h2, html.hc h3, html.hc h4 { color: #0c1116; }
+html.hc .card,
+html.hc .chip { border: 2px solid #0c1116 !important; box-shadow: none !important; }
+html.hc .btn-primary { background: #143049; }
+html.hc .btn-accent { background: #b9651f; color: #fff; }
+html.hc .btn-ghost { border-color: #0c1116; color: #0c1116; }
+html.hc .eyebrow,
+html.hc .link-underline,
+html.hc .link-underline { color: #143049; }
+html.hc a:not(.btn) { text-decoration: underline; text-underline-offset: 3px; }
+html.hc .blob { display: none; }
+html.hc .text-white\/80,
+html.hc .text-white\/90 { color: #fff !important; }
+
+/* Keep header always legible */
+.header-shadow { box-shadow: 0 10px 30px -18px rgba(46, 63, 83, 0.4); }
+
+/* Accordion (FAQ) */
+details.faq > summary { list-style: none; cursor: pointer; }
+details.faq > summary::-webkit-details-marker { display: none; }
+details.faq[open] .faq-icon { transform: rotate(45deg); }
+
+/* Gallery lightbox */
+.lightbox[hidden] { display: none; }

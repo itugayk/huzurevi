@@ -1,0 +1,65 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import TeamCard from "../components/TeamCard.astro";
+import Icon from "../components/Icon.astro";
+import CtaBand from "../components/CtaBand.astro";
+import { team } from "../data/site";
+
+const commitments = [
+  { icon: "users", title: "1:4 Personel Oranı", text: "Her sakinimize yeterli zaman ve ilgi ayırabilmek için dengeli bir personel oranı." },
+  { icon: "clock", title: "7/24 Hemşire", text: "Gece gündüz nöbetçi hemşire ve bakım personeli her zaman görevde." },
+  { icon: "badge", title: "Sürekli Eğitim", text: "Ekibimiz; yaşlı bakımı, ilk yardım ve demans bakımı eğitimleriyle güncel kalır." },
+];
+---
+
+<BaseLayout
+  title="Ekibimiz"
+  description="Hekim, hemşire, fizyoterapist, diyetisyen ve sosyal hizmet uzmanlarından oluşan uzman bakım ekibimizle tanışın."
+>
+  <PageHero
+    current="Ekip"
+    eyebrow="Sağlık & Bakım Ekibi"
+    eyebrowIcon="users"
+    title="Sevdiklerinize bakan güler yüzler"
+    intro="Alanında uzman, deneyimli ve gerçekten özverili bir ekibiz. Bizim için bu bir meslek değil, bir gönül işi."
+  />
+
+  <section class="section">
+    <div class="container-x">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" data-reveal-group>
+        {team.map((member) => <TeamCard member={member} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container-x">
+      <SectionHeading
+        eyebrow="Ekip Yaklaşımımız"
+        eyebrowIcon="hand-heart"
+        title="Kaliteli bakım, kaliteli bir ekiple başlar"
+        intro="Doğru sayıda, doğru eğitimli ve mutlu bir ekip; sevdiklerinize en iyi bakımın temelidir."
+      />
+      <div class="mt-12 grid sm:grid-cols-3 gap-6" data-reveal-group>
+        {
+          commitments.map((c) => (
+            <div class="card text-center p-8 h-full" data-reveal-item>
+              <span class="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-peach-100 text-peach-600">
+                <Icon name={c.icon} size={32} />
+              </span>
+              <h3 class="mt-5 text-xl text-brand-800">{c.title}</h3>
+              <p class="mt-2 text-ink-soft leading-relaxed">{c.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Ekibimizle tanışmak ister misiniz?"
+    text="Sevdiğinizin bakımını üstlenecek hekim ve hemşirelerimizle yüz yüze tanışmanız, en güçlü güven kaynağıdır. Sizi bekliyoruz."
+  />
+</BaseLayout>
