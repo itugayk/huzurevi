@@ -9,164 +9,194 @@ const isActive = (href: string) =>
 
 <header data-header class="sticky top-0 z-50">
   <!-- Utility bar -->
-  <div class="bg-brand-700 text-white text-[0.95rem]">
-    <div class="container-x flex flex-wrap items-center justify-between gap-x-6 gap-y-1 py-2">
+  <div class="bg-brand-800 text-white/90 text-sm">
+    <div class="container-x flex items-center justify-between gap-4 h-10">
       <a
         href={`tel:${site.emergencyHref}`}
-        class="inline-flex items-center gap-2 font-bold hover:text-peach-200 transition-colors"
+        class="inline-flex items-center gap-2 font-semibold hover:text-peach-200 transition-colors"
       >
-        <Icon name="phone" size={18} />
-        <span class="text-white/80 font-semibold">Acil Hat:</span>
-        {site.emergency}
+        <Icon name="phone" size={16} class="text-peach-300" />
+        <span class="text-white/65">Acil Hat 7/24:</span>
+        <span class="font-bold text-white">{site.emergency}</span>
       </a>
 
-      <div class="flex items-center gap-2">
-        <span class="hidden sm:inline text-white/70 text-sm mr-1">Erişilebilirlik:</span>
-        <button
-          type="button"
-          data-a11y="font-dec"
-          class="grid h-9 w-9 place-items-center rounded-full bg-white/10 hover:bg-white/20 transition-colors text-sm font-extrabold"
-          aria-label="Yazıyı küçült"
-        >A−</button>
-        <button
-          type="button"
-          data-a11y="font-inc"
-          class="grid h-9 w-9 place-items-center rounded-full bg-white/10 hover:bg-white/20 transition-colors text-base font-extrabold"
-          aria-label="Yazıyı büyüt"
-        >A+</button>
+      <div class="flex items-center gap-1.5">
+        <span class="hidden md:inline text-white/55 mr-1">Erişilebilirlik</span>
+        <div class="flex items-center rounded-full bg-white/10 p-0.5">
+          <button
+            type="button"
+            data-a11y="font-dec"
+            class="grid h-7 w-8 place-items-center rounded-full hover:bg-white/15 transition-colors text-xs font-extrabold"
+            aria-label="Yazıyı küçült"
+          >A−</button>
+          <button
+            type="button"
+            data-a11y="font-inc"
+            class="grid h-7 w-8 place-items-center rounded-full hover:bg-white/15 transition-colors text-sm font-extrabold"
+            aria-label="Yazıyı büyüt"
+          >A+</button>
+        </div>
         <button
           type="button"
           data-a11y="contrast"
           aria-pressed="false"
-          class="inline-flex items-center gap-1.5 h-9 rounded-full bg-white/10 hover:bg-white/20 transition-colors px-3 text-sm font-bold"
+          class="inline-flex items-center gap-1.5 h-8 rounded-full bg-white/10 hover:bg-white/15 transition-colors px-2.5 font-semibold"
           aria-label="Yüksek kontrast modunu aç/kapat"
         >
-          <Icon name="sun" size={17} />
-          <span class="hidden md:inline">Kontrast</span>
+          <Icon name="sun" size={16} />
+          <span class="hidden sm:inline">Kontrast</span>
         </button>
       </div>
     </div>
   </div>
 
   <!-- Main bar -->
-  <div data-headbar class="bg-cream-50/95 backdrop-blur-md transition-shadow duration-300 border-b border-brand-100/70">
-    <div class="container-x flex items-center justify-between gap-4 py-3">
+  <div
+    data-headbar
+    class="bg-cream-50/85 backdrop-blur-md border-b border-brand-100/70"
+  >
+    <div class="container-x flex items-center gap-3 h-[4.75rem]">
       <!-- Logo -->
-      <a href="/" class="flex items-center gap-3 group" aria-label={`${site.name} ana sayfa`}>
+      <a href="/" class="flex items-center gap-3 group shrink-0 mr-1" aria-label={`${site.name} ana sayfa`}>
         <span
-          class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand-400 to-brand-600 text-white shadow-md group-hover:scale-105 transition-transform"
+          class="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand-400 to-brand-600 text-white shadow-sm shadow-brand-500/30 group-hover:scale-105 transition-transform"
         >
-          <Icon name="hand-heart" size={26} />
+          <Icon name="hand-heart" size={24} />
         </span>
-        <span class="leading-tight">
-          <span class="block font-display font-extrabold text-xl text-brand-800">{site.name}</span>
-          <span class="block text-[0.78rem] font-semibold tracking-wide text-ink-muted">Huzurevi & Yaşlı Bakım Merkezi</span>
+        <span class="leading-none">
+          <span class="block font-display font-extrabold text-lg xl:text-[1.35rem] text-brand-800 tracking-tight">{site.name}</span>
+          <span class="mt-1 hidden 2xl:block text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-ink-muted">Huzurevi & Yaşlı Bakım Merkezi</span>
         </span>
       </a>
 
-      <!-- Desktop nav -->
-      <nav class="hidden lg:flex items-center gap-1" aria-label="Ana menü">
+      <!-- Desktop nav (xl+) -->
+      <nav class="hidden xl:flex items-center gap-0.5 flex-1 justify-center" aria-label="Ana menü">
         {
           nav.map((item) => (
             <a
               href={item.href}
               aria-current={isActive(item.href) ? "page" : undefined}
               class:list={[
-                "px-3.5 py-2.5 rounded-full text-[1.02rem] font-bold transition-colors",
-                isActive(item.href)
-                  ? "text-brand-700 bg-brand-100"
-                  : "text-ink-soft hover:text-brand-700 hover:bg-brand-50",
+                "group relative px-3 py-2 text-[1.02rem] font-bold whitespace-nowrap transition-colors",
+                isActive(item.href) ? "text-brand-800" : "text-ink-soft hover:text-brand-700",
               ]}
             >
               {item.label}
+              <span
+                class:list={[
+                  "pointer-events-none absolute inset-x-2.5 -bottom-0.5 h-[3px] rounded-full bg-peach-400 origin-left transition-transform duration-300 ease-out",
+                  isActive(item.href) ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100",
+                ]}
+              />
             </a>
           ))
         }
       </nav>
 
-      <div class="flex items-center gap-2">
-        <a href="/iletisim" class="btn btn-accent hidden sm:inline-flex !min-h-[3rem] !px-5">
+      <!-- Actions -->
+      <div class="flex items-center gap-2 shrink-0 ml-auto xl:ml-0">
+        <a
+          href={`tel:${site.phoneHref}`}
+          class="hidden sm:inline-flex items-center gap-2 rounded-full h-12 pl-1.5 pr-2 2xl:pr-4 hover:bg-brand-50 transition-colors group"
+          aria-label={`Bizi arayın: ${site.phone}`}
+        >
+          <span class="grid h-9 w-9 place-items-center rounded-full bg-brand-100 text-brand-600 group-hover:bg-brand-200 transition-colors">
+            <Icon name="phone" size={18} />
+          </span>
+          <span class="hidden 2xl:flex flex-col leading-tight">
+            <span class="text-[0.7rem] font-semibold text-ink-muted">Hemen arayın</span>
+            <span class="font-bold text-brand-800 text-[0.95rem]">{site.phone}</span>
+          </span>
+        </a>
+
+        <a href="/iletisim" class="btn btn-accent hidden lg:inline-flex !min-h-[3rem] !px-5">
           <Icon name="calendar" size={20} />
           Ziyaret Planlayın
         </a>
 
-        <!-- Mobile toggle -->
+        <!-- Mobile / tablet toggle -->
         <button
           type="button"
           data-menu-toggle
           aria-expanded="false"
           aria-controls="mobile-menu"
-          class="lg:hidden grid h-12 w-12 place-items-center rounded-2xl bg-brand-100 text-brand-700"
+          class="xl:hidden grid h-12 w-12 place-items-center rounded-2xl bg-brand-100 text-brand-700 hover:bg-brand-200 transition-colors"
           aria-label="Menüyü aç"
         >
-          <Icon name="menu" size={26} />
+          <span data-menu-icon><Icon name="menu" size={26} /></span>
+          <span data-close-icon hidden><Icon name="x" size={26} /></span>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Mobile menu -->
+  <!-- Mobile / tablet menu (below xl) -->
   <div
     id="mobile-menu"
     data-mobile-menu
     hidden
-    class="lg:hidden bg-cream-50 border-b border-brand-100 shadow-soft"
+    class="xl:hidden bg-cream-50 border-b border-brand-100 shadow-soft"
   >
-    <nav class="container-x py-4 flex flex-col gap-1" aria-label="Mobil menü">
+    <nav class="container-x py-4 grid sm:grid-cols-2 gap-1.5" aria-label="Mobil menü">
       {
         nav.map((item) => (
           <a
             href={item.href}
             aria-current={isActive(item.href) ? "page" : undefined}
             class:list={[
-              "px-4 py-3.5 rounded-2xl text-lg font-bold transition-colors",
+              "flex items-center justify-between px-4 py-3.5 rounded-2xl text-lg font-bold transition-colors",
               isActive(item.href)
-                ? "text-brand-700 bg-brand-100"
+                ? "text-brand-800 bg-brand-100"
                 : "text-ink-soft hover:bg-brand-50",
             ]}
           >
             {item.label}
+            {isActive(item.href) && <Icon name="check" size={20} class="text-peach-600" />}
           </a>
         ))
       }
-      <a href="/iletisim" class="btn btn-accent mt-2 w-full">
+    </nav>
+    <div class="container-x pb-5 flex flex-col sm:flex-row gap-2.5">
+      <a href="/iletisim" class="btn btn-accent flex-1">
         <Icon name="calendar" size={20} />
         Ziyaret Planlayın
       </a>
-    </nav>
+      <a href={`tel:${site.phoneHref}`} class="btn btn-ghost flex-1">
+        <Icon name="phone" size={20} />
+        {site.phone}
+      </a>
+    </div>
   </div>
 </header>
 
 <script>
   const toggle = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
   const menu = document.querySelector<HTMLElement>("[data-mobile-menu]");
+  const menuIcon = document.querySelector<HTMLElement>("[data-menu-icon]");
+  const closeIcon = document.querySelector<HTMLElement>("[data-close-icon]");
 
   if (toggle && menu) {
-    toggle.addEventListener("click", () => {
-      const open = menu.hasAttribute("hidden");
-      if (open) {
-        menu.removeAttribute("hidden");
-        toggle.setAttribute("aria-expanded", "true");
-        toggle.setAttribute("aria-label", "Menüyü kapat");
-      } else {
-        menu.setAttribute("hidden", "");
-        toggle.setAttribute("aria-expanded", "false");
-        toggle.setAttribute("aria-label", "Menüyü aç");
-      }
+    const setOpen = (open: boolean) => {
+      if (open) menu.removeAttribute("hidden");
+      else menu.setAttribute("hidden", "");
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      toggle.setAttribute("aria-label", open ? "Menüyü kapat" : "Menüyü aç");
+      menuIcon?.toggleAttribute("hidden", open);
+      closeIcon?.toggleAttribute("hidden", !open);
+    };
+
+    toggle.addEventListener("click", () => setOpen(menu.hasAttribute("hidden")));
+    menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => setOpen(false)));
+    // Reset when crossing back to desktop width
+    window.matchMedia("(min-width: 1280px)").addEventListener("change", (e) => {
+      if (e.matches) setOpen(false);
     });
-    // Close after navigating
-    menu.querySelectorAll("a").forEach((a) =>
-      a.addEventListener("click", () => {
-        menu.setAttribute("hidden", "");
-        toggle.setAttribute("aria-expanded", "false");
-      })
-    );
   }
 
-  // Subtle shadow once scrolled
+  // Solid background + shadow once scrolled
   const bar = document.querySelector<HTMLElement>("[data-headbar]");
   if (bar) {
-    const onScroll = () => bar.classList.toggle("header-shadow", window.scrollY > 12);
+    const onScroll = () => bar.classList.toggle("is-scrolled", window.scrollY > 8);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
   }

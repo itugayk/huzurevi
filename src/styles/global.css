@@ -280,8 +280,21 @@ html.hc .blob { display: none; }
 html.hc .text-white\/80,
 html.hc .text-white\/90 { color: #fff !important; }
 
-/* Keep header always legible */
-.header-shadow { box-shadow: 0 10px 30px -18px rgba(46, 63, 83, 0.4); }
+/* Header: solidify + lift on scroll */
+[data-headbar] {
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+[data-headbar].is-scrolled {
+  background-color: rgba(253, 250, 244, 0.92);
+  box-shadow: 0 14px 34px -22px rgba(46, 63, 83, 0.5);
+}
+html.hc [data-headbar].is-scrolled { background-color: #ffffff; }
+
+/* Active state for the high-contrast toggle button */
+[data-a11y="contrast"][aria-pressed="true"] {
+  background-color: var(--color-peach-400) !important;
+  color: var(--color-brand-900) !important;
+}
 
 /* Accordion (FAQ) */
 details.faq > summary { list-style: none; cursor: pointer; }
